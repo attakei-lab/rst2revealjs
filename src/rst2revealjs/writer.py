@@ -2,12 +2,19 @@
 
 from __future__ import annotations
 
+from dataclasses import dataclass
 from pathlib import Path
 
 from docutils import nodes
 from docutils.writers import html5_polyglot as base_writer
 
 from .engine import RevealjsEngine
+
+
+@dataclass
+class WriterOptions:
+    revealjs_version: str
+    revealjs_theme: str
 
 
 class RevealjsTranslator(base_writer.HTMLTranslator):
@@ -64,14 +71,43 @@ class RevealjsWriter(base_writer.Writer):
     default_template = Path(__file__).parent / "template.txt"
     default_revealjs_version = "5.2.1"
 
+    settings_spec = base_writer.Writer.settings_spec + (
+        "Revealjs Writer Options",
+        None,
+        (
+            (
+                "Using version of Reveal.js",
+                ["--revealjs-version"],
+                {
+                    "default": default_revealjs_version,
+                    "dest": "revealjs_version",
+                    "metavar": "<VERSION_TEXT>",
+                    "type": str,
+                },
+            ),
+            (
+                "Reveal.js theme",
+                ["--revealjs-theme"],
+                {
+                    "default": "black",
+                    "dest": "revealjs_theme",
+                    "metavar": "<str>",
+                    "type": str,
+                },
+            ),
+        ),
+    )
+
     def __init__(self):
         super().__init__()
         self.translator_class = RevealjsTranslator
 
     def translate(self) -> None:
         assert self.document
+        settings: WriterOptions = self.document.settings
         data = {
-            "version": self.default_revealjs_version,
+            "version": settings.revealjs_version,
+            "theme": settings.revealjs_theme,
         }
         self.revealjs = RevealjsEngine(**data)
         self.document["revealjs"] = self.revealjs
