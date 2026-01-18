@@ -8,10 +8,12 @@ main {
     div.cell {
       textarea {
         font-family: monospace;
+        width: 100%;
         height: 100vh;
       }
       iframe {
-        height: 100vh - calc(var(--navbar-height) * 1.5);
+        width: 100%;
+        min-height: calc(100vh - var(--navbar-height) * 1.5);
       }
     }
   }
