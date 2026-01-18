@@ -20,7 +20,7 @@
         <div class="grid">
           <div id="source" class="cell">
             <h2 class="subtitle">Source</h2>
-            <textarea class="textarea" style="height: 100vh; font-family: monospace;" x-model="source" x-on:change="output = await rst2revealjs(source);"></textarea>
+            <textarea class="textarea" style="height: 100vh; font-family: monospace;" x-model="source" x-on:input="output = await rst2revealjs(source);"></textarea>
           </div>
           <div id="output" class="cell">
             <h2 class="subtitle">Output</h2>
