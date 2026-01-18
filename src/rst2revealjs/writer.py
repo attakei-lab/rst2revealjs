@@ -2,11 +2,12 @@
 
 from __future__ import annotations
 
-import textwrap
 from pathlib import Path
 
 from docutils import frontend, nodes
 from docutils.writers import html5_polyglot as base_writer
+
+from .engine import RevealjsEngine
 
 
 class RevealjsTranslator(base_writer.HTMLTranslator):
@@ -22,22 +23,9 @@ class RevealjsTranslator(base_writer.HTMLTranslator):
     def __init__(self, document: nodes.document) -> None:
         super().__init__(document)
         self.initial_header_level = 1
-        self.stylesheet = [
-            self.stylesheet_link
-            % "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.min.css",
-            self.stylesheet_link
-            % "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/theme/black.min.css",
-        ]
-        self.reveal = textwrap.dedent(
-            """
-        <script type="module">
-        import Reveal from "https://cdnjs.cloudflare.com/ajax/libs/reveal.js/5.2.1/reveal.esm.min.js";
-
-        let deck = new Reveal();
-        deck.initialize();
-        </script>
-        """.strip()
-        )
+        self.revealjs: RevealjsEngine = self.document["revealjs"]
+        self.stylesheet = self.revealjs.build_stylesheet()
+        self.reveal = self.revealjs.build_script()
 
     def visit_document(self, node: nodes.document):
         super().visit_document(node)
@@ -74,6 +62,7 @@ class RevealjsTranslator(base_writer.HTMLTranslator):
 
 class RevealjsWriter(base_writer.Writer):
     default_template = Path(__file__).parent / "template.txt"
+    default_revealjs_version = "5.2.1"
 
     settings_spec = frontend.filter_settings_spec(
         base_writer.Writer.settings_spec,
@@ -87,3 +76,12 @@ class RevealjsWriter(base_writer.Writer):
     def __init__(self):
         super().__init__()
         self.translator_class = RevealjsTranslator
+
+    def translate(self) -> None:
+        assert self.document
+        data = {
+            "version": self.default_revealjs_version,
+        }
+        self.revealjs = RevealjsEngine(**data)
+        self.document["revealjs"] = self.revealjs
+        super().translate()
