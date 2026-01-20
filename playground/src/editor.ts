@@ -6,6 +6,13 @@ import { createHighlighterCore } from "shiki/core";
 import { createOnigurumaEngine } from "shiki/engine/oniguruma";
 import shikiWasm from "shiki/wasm";
 
+const fixedHeightEditor = EditorView.theme({
+  "&": {
+    height: "50dvh",
+  },
+  ".cm-scroller": { overflow: "auto" },
+});
+
 const highlighter = createHighlighterCore({
   langs: [langRst],
   themes: [themeGithubLight],
@@ -19,6 +26,7 @@ export function createEditorView(
   return new EditorView({
     extensions: [
       basicSetup,
+      fixedHeightEditor,
       shiki({ highlighter, language: "rst", theme: "github-light" }),
       EditorView.updateListener.of((update) => {
         if (update.docChanged) {
