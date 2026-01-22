@@ -1,17 +1,6 @@
 import Alpine from "alpinejs";
-import { createEditorView } from "./editor";
-import { publishRevealjs } from "./rst2revealjs";
 import "./style.css";
+import playground from "./contexts/playground";
 
-Alpine.data("playground", () => ({
-  editor: null,
-  published: "",
-  init() {
-    this.editor = createEditorView(this.$refs.editor, async (code) => {
-      const html = publishRevealjs(code);
-      this.published = html;
-    });
-  },
-}));
-
+Alpine.data("playground", playground);
 Alpine.start();
