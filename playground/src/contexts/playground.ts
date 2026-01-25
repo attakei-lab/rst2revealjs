@@ -12,10 +12,12 @@ export default (): AlpineComponent<Data> => ({
   editor: null,
   published: "",
   init() {
-    this.editor = createEditorView(this.$refs.editor, async (code) => {
+    const editor = createEditorView(async (code) => {
       const html = publishRevealjs(code);
       this.published = html;
     });
-    this.published = publishRevealjs(this.editor.state.doc.toString());
+    this.published = publishRevealjs(editor.state.doc.toString());
+    this.editor = editor;
+    // this.$refs.editor.appendChild(editor.dom);
   },
 });

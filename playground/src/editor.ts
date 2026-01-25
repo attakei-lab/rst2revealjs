@@ -21,7 +21,6 @@ const highlighter = createHighlighterCore({
 });
 
 export function createEditorView(
-  parent: HTMLElement,
   onUpdate: (code: string) => void | Promise<void>,
 ): EditorView {
   return new EditorView({
@@ -36,6 +35,5 @@ export function createEditorView(
         }
       }),
     ],
-    parent,
   });
 }
