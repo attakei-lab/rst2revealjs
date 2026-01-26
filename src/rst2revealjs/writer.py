@@ -94,6 +94,6 @@ class RevealjsWriter(base_writer.Writer):
             "version": settings.revealjs_version,
             "theme": settings.revealjs_theme,
         }
-        self.revealjs = RevealjsEngine(**data)
+        self.revealjs = RevealjsEngine.from_cdn(**data)
         self.document["revealjs"] = self.revealjs
         super().translate()
