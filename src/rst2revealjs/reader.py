@@ -19,6 +19,11 @@ class RevealjsReader(Reader):
                 ["--revealjs-theme"],
                 {"dest": "revealjs_theme", "default": "black"},
             ),
+            (
+                "Highlight.js theme used in code highlighting.",
+                ["--highlightjs-theme"],
+                {"dest": "highlightjs_theme", "default": "monokai"},
+            ),
         ),
     )
 
