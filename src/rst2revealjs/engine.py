@@ -9,7 +9,7 @@ from jinja2 import Template
 DEFAULT_VERSION = "5.2.1"
 
 DEFAULT_INIT_SCRIPT = """
-{% for name, url in imports|items %}
+{% for name, url in imports|items -%}
 import {{name}} from "{{url}}";
 {% endfor %}
 
@@ -36,15 +36,23 @@ class RevealjsEngine:
         """
 
     @classmethod
-    def from_cdn(cls, version: str, theme: str = "black") -> RevealjsEngine:
+    def from_cdn(
+        cls, version: str, theme: str = "black", code_theme: str = "monokai"
+    ) -> RevealjsEngine:
         styles = [
             f"https://cdnjs.cloudflare.com/ajax/libs/reveal.js/{version}/reveal.min.css",
             f"https://cdnjs.cloudflare.com/ajax/libs/reveal.js/{version}/theme/{theme}.min.css",
+            f"https://cdnjs.cloudflare.com/ajax/libs/highlight.js/11.11.1/styles/{code_theme}.min.css",
         ]
         imports = {
             "Reveal": f"https://cdnjs.cloudflare.com/ajax/libs/reveal.js/{version}/reveal.esm.min.js",
+            "RevealHighlight": f"https://cdnjs.cloudflare.com/ajax/libs/reveal.js/{version}/plugin/highlight/highlight.esm.min.js",
         }
+        arguments = """
+        {plugins: [RevealHighlight]}
+        """
         return cls(
             styles=styles,
             imports=imports,
+            arguments=arguments,
         )

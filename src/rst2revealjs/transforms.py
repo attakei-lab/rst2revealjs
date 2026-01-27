@@ -15,6 +15,7 @@ class RevealjsEngineTransform(Transform):
         data = {
             "version": settings.revealjs_version,
             "theme": settings.revealjs_theme,
+            "code_theme": settings.highlightjs_theme,
         }
         engine = RevealjsEngine.from_cdn(**data)
         node = revealjs_deck(engine=engine)
