@@ -1,7 +1,7 @@
 from docutils.readers.standalone import Reader
 
+from . import transforms
 from .engine import DEFAULT_VERSION
-from .transforms import RevealjsEngineTransform, RevealjsSectionizeTransform
 
 
 class RevealjsReader(Reader):
@@ -33,6 +33,7 @@ class RevealjsReader(Reader):
 
     def get_transforms(self):
         return super().get_transforms() + [
-            RevealjsSectionizeTransform,
-            RevealjsEngineTransform,
+            transforms.RevealjsSectionizeTransform,
+            transforms.RevealjsEngineTransform,
+            transforms.TitleTransform,
         ]

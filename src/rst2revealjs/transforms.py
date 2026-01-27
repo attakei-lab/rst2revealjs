@@ -63,3 +63,14 @@ class RevealjsSectionizeTransform(Transform):
             deck.append(_rebuild(vertical))
 
         self.document.children = [deck] + self.document.children
+
+
+class TitleTransform(Transform):
+    default_priority = 351
+
+    def apply(self, **kwargs):
+        for node in self.document.findall(nodes.title):
+            self.document["title"] = node.astext()
+            break
+        else:
+            raise ValueError("Title is not found.")
