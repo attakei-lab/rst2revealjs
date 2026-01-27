@@ -7,6 +7,7 @@ const pyodide = await loadPyodide({
 
 await pyodide.loadPackage("docutils");
 await pyodide.loadPackage("pygments");
+await pyodide.loadPackage("jinja2");
 // TODO: This is temporary path in development. Change it after release.
 await pyodide.loadPackage("/rst2revealjs-0.0.0-py3-none-any.whl");
 await pyodide.runPython(mainPy);
