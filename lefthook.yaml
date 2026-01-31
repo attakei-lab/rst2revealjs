@@ -20,6 +20,13 @@ pre-commit:
             run: '{run_python} ruff format {staged_files}'
           - name: lint
             run: '{run_python} ruff check --fix {staged_files}'
+    - name: 'Biome'
+      glob: '*.ts'
+      group:
+        parallel: false
+        jobs:
+          - name: check
+            run: 'biome check {staged_files}'
   commands:
     ty:
       glob: '*.py'
