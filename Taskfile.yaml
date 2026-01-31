@@ -1,5 +1,10 @@
 version: '3'
 
+includes:
+    website:
+        taskfile: './website'
+        dir: './website'
+
 tasks:
     setup-dev:
         desc: 'Setup workspace'
@@ -8,19 +13,6 @@ tasks:
             - 'lefthook install'
             - 'bun --cwd=playground install'
             - 'uv build --out-dir=website/public'
-    build-pages:
-        desc: 'Build pages for deployment'
-        cmds:
-            - >
-                uv run rst2html5
-                --template=website/template.txt
-                README.rst
-                website/index.html
-    dev:
-        desc: 'Start playground on localhost'
-        cmds:
-            - task: 'build-pages'
-            - 'bun --cwd=website dev'
     release-*:
         desc: 'Run release process'
         vars:
