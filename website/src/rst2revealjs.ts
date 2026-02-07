@@ -16,7 +16,11 @@ if (import.meta.env.VITE_LOCAL_VERSION) {
   const wheel = `./rst2revealjs-${import.meta.env.VITE_LOCAL_VERSION}-py3-none-any.whl`;
   await pyodide.loadPackage(wheel);
 } else {
-  await pyodide.loadPackage("rst2revealjs");
+  await pyodide.runPythonAsync(`
+    import micropip
+  
+    await micropip.install(["rst2revealjs"])
+  `);
 }
 await pyodide.runPython(mainPy);
 
