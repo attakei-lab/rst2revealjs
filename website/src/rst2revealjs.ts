@@ -8,8 +8,8 @@ const pyodide = await loadPyodide({
 await pyodide.loadPackage("micropip");
 await pyodide.runPythonAsync(`
   import micropip
-  
-  await micropip.install(["docutils", "jinja2"])
+
+  await micropip.install(["docutils", "jinja2", "myst_parser"])
 `);
 if (import.meta.env.VITE_LOCAL_VERSION) {
   console.log("Use local wheel file");
@@ -20,8 +20,12 @@ if (import.meta.env.VITE_LOCAL_VERSION) {
 }
 await pyodide.runPython(mainPy);
 
-function publishRevealjs(source: string, settings: string): string {
-  return pyodide.globals.get("publish_revealjs")(source, settings);
+function publishRevealjs(
+  source: string,
+  sourceType: string,
+  settings: string,
+): string {
+  return pyodide.globals.get("publish_revealjs")(source, sourceType, settings);
 }
 
 export { publishRevealjs };
