@@ -9,10 +9,8 @@ await pyodide.loadPackage("micropip");
 await pyodide.runPythonAsync(`
   import micropip
   
-  await micropip.install(["docutils", "jinja2"])
+  await micropip.install(["rst2revealjs"])
 `);
-// TODO: This is temporary path in development. Change it after release.
-await pyodide.loadPackage("./rst2revealjs-0.0.0-py3-none-any.whl");
 await pyodide.runPython(mainPy);
 
 function publishRevealjs(source: string, settings: string): string {
