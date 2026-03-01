@@ -1,0 +1,27 @@
+{
+  "name": "live-preview-for-rst2revealjs",
+  "publisher": "attakei",
+  "version": "0.0.0",
+  "module": "index.ts",
+  "type": "module",
+  "private": true,
+  "repository": {
+    "url": "https://gitbu.com/atsphinx/rst2revealjs",
+    "directory": "ide-extensions/vscode"
+  },
+  "engines": {
+    "vscode": "^1.106.0"
+  },
+  "scripts": {
+    "build": "bun build src/extension.ts --outdir=out/",
+    "package": "vsce package --no-dependencies"
+  },
+  "devDependencies": {
+    "@types/bun": "latest",
+    "vsce": "^2.15.0",
+    "vscode": "^1.1.37"
+  },
+  "peerDependencies": {
+    "typescript": "^5"
+  }
+}

@@ -1,0 +1,11 @@
+version: '3'
+
+tasks:
+  setup-dev:
+    cmds:
+      - 'bun install'
+      - 'cp ../../LICENSE ./'
+  package:
+    cmds:
+      - 'bun run build'
+      - 'bun run package'
