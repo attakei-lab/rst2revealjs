@@ -26,7 +26,7 @@ pre-commit:
         parallel: false
         jobs:
           - name: check
-            run: 'biome check {staged_files}'
+            run: 'bunx @biomejs/biome check {staged_files}'
   commands:
     ty:
       glob: '*.py'
