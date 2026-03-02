@@ -61,3 +61,18 @@ jobs:
   #     - name: 'Run tests'
   #       run: |
   #         uv run pytest
+  ide-vscode-build-test:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+      - uses: aquaproj/aqua-installer@ea518c135a02fc11ff8024364510c181a5c6b342 # v4.0.3
+        with:
+          aqua_version: v2.43.1
+      - name: 'Configure dependencies'
+        working-directory: ./ide-extensions/vscode
+        run: |
+          task setup-dev
+      - name: 'Try to build'
+        working-directory: ./ide-extensions/vscode
+        run: |
+          task package
