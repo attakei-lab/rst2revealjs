@@ -2,32 +2,9 @@ import * as cp from "node:child_process";
 import * as path from "node:path";
 import * as vscode from "vscode";
 
-type EditorContent = {
-  filename: string;
-  language: string;
-  body: string;
-};
-
-const panels: Map<string, vscode.WebviewPanel> = new Map();
-
-function getEditorContent(): EditorContent | null {
-  const editor = vscode.window.activeTextEditor;
-  if (!editor) {
-    return null;
-  }
-  return {
-    filename: editor.document.fileName,
-    language: editor.document.languageId,
-    body: editor.document.getText(),
-  };
-}
-
-function updateContent(content: EditorContent) {
-  const panel = panels.get(content.filename);
-  if (panel) {
-    const proc = cp.spawnSync("uvx", ["rst2revealjs"], { input: content.body });
-    panel.webview.html = proc.stdout.toString();
-  }
+function makeContent(source: string): string {
+  const proc = cp.spawnSync("uvx", ["rst2revealjs"], { input: source });
+  return proc.stdout.toString();
 }
 
 export function activate(context: vscode.ExtensionContext) {
@@ -37,30 +14,34 @@ export function activate(context: vscode.ExtensionContext) {
   const disposable = vscode.commands.registerCommand(
     "live-preview-for-rst2revealjs.startPreview",
     () => {
-      const content = getEditorContent();
-      if (!content) {
+      const editor = vscode.window.activeTextEditor;
+      if (!editor) {
         vscode.window.showErrorMessage("No active editor found.");
         return;
       }
-      if (content.language !== "restructuredtext") {
+      if (editor.document.languageId !== "restructuredtext") {
         vscode.window.showErrorMessage(
-          "The active file is not a reStructuredText file.",
+          "Target is not a reStructuredText file.",
         );
         return;
       }
-      if (!panels.has(content.filename)) {
-        const webviewPanel = vscode.window.createWebviewPanel(
-          "livePreview",
-          `Live Preview: ${path.basename(content.filename)}`,
-          vscode.ViewColumn.Beside,
-          {
-            enableScripts: true,
-            retainContextWhenHidden: true,
-          },
-        );
-        panels.set(content.filename, webviewPanel);
-        updateContent(content);
-      }
+      const filename = editor.document.fileName;
+      const webviewPanel = vscode.window.createWebviewPanel(
+        "livePreview",
+        `Live Preview: ${path.basename(filename)}`,
+        vscode.ViewColumn.Beside,
+        {
+          enableScripts: true,
+          retainContextWhenHidden: true,
+        },
+      );
+      const handleSave = vscode.workspace.onDidSaveTextDocument((document) => {
+        if (document === editor.document) {
+          webviewPanel.webview.html = makeContent(document.getText());
+        }
+      });
+      webviewPanel.onDidDispose(() => handleSave.dispose());
+      webviewPanel.webview.html = makeContent(editor.document.getText());
     },
   );
 
