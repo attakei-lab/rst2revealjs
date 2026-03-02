@@ -1,6 +1,5 @@
 {
   "name": "live-preview-for-rst2revealjs",
-  "publisher": "attakei",
   "version": "0.0.0",
   "module": "index.ts",
   "main": "out/extension.js",
@@ -25,6 +24,8 @@
   "peerDependencies": {
     "typescript": "^5"
   },
+  "publisher": "attakei",
+  "displayName": "Live Preview for rst2revealjs",
   "activationEvents": [
     "onLanguage:markdown",
     "onLanguage:restructuredtext"
