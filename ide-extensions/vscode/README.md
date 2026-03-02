@@ -1,15 +1,19 @@
-# vscode
+# Live preview for rst2revealjs
 
-To install dependencies:
+Provide WebView panel to preveiew presentation using rst2revealjs.
 
-```bash
-bun install
-```
+## Requirements
 
-To run:
+Currently, this extension required `uv` command to generate presentation HTML.
 
-```bash
-bun run index.ts
-```
+## Installation
 
-This project was created using `bun init` in bun v1.3.6. [Bun](https://bun.com) is a fast all-in-one JavaScript runtime.
+(TBD)
+
+## Usage
+
+1. Open reStructuredText file.
+2. Open command pallet <kbd>Shift+Ctrl+P</kbd>
+3. Execute `rst2revealjs: Start preview`.
+
+When you save target file, preview panel regenerates HTML and refreshes.
