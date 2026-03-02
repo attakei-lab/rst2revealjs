@@ -33,7 +33,8 @@
     "commands": [
       {
         "command": "live-preview-for-rst2revealjs.startPreview",
-        "title": "rst2revealjs: Start Live Preview"
+        "title": "Start Live Preview",
+        "category": "rst2revealjs"
       }
     ]
   }
