@@ -3,6 +3,7 @@
   "publisher": "attakei",
   "version": "0.0.0",
   "module": "index.ts",
+  "main": "out/extension.js",
   "type": "module",
   "private": true,
   "repository": {
@@ -13,7 +14,7 @@
     "vscode": "^1.106.0"
   },
   "scripts": {
-    "build": "bun build src/extension.ts --outdir=out/",
+    "build": "bun build src/extension.ts --outdir=out/ --external vscode --target node",
     "package": "vsce package --no-dependencies"
   },
   "devDependencies": {
@@ -23,5 +24,17 @@
   },
   "peerDependencies": {
     "typescript": "^5"
+  },
+  "activationEvents": [
+    "onLanguage:markdown",
+    "onLanguage:restructuredtext"
+  ],
+  "contributes": {
+    "commands": [
+      {
+        "command": "live-preview-for-rst2revealjs.startPreview",
+        "title": "rst2revealjs: Start Live Preview"
+      }
+    ]
   }
 }

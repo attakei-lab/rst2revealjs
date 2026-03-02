@@ -3,7 +3,7 @@
   "configVersion": 1,
   "workspaces": {
     "": {
-      "name": "vscode",
+      "name": "live-preview-for-rst2revealjs",
       "devDependencies": {
         "@types/bun": "latest",
         "vsce": "^2.15.0",
